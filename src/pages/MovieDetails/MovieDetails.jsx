@@ -1,42 +1,36 @@
 import { getMovieByID, baseConfig } from '../../APIService/API';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-// import { GetGenres } from '../../components/GetGenres';
+import { Suspense, useEffect, useState } from 'react';
+import { Link, Outlet, useParams, useLocation } from 'react-router-dom';
+import Loader from 'components/Loader';
+import styles from './MovieDetails.module.css';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const [movieInfo, setMovieInfo] = useState(null);
   const { movieId } = useParams();
-  console.log(movieId);
+  const location = useLocation();
+
   useEffect(() => {
     async function addMovieInfo() {
-      try {
-        const response = await getMovieByID(movieId);
-        console.log(response);
-        setMovieInfo(response);
-        return response;
-      } catch (error) {
-        console.log(error.message);
+      if (movieId) {
+        try {
+          const results = await getMovieByID(movieId);
+          // console.log(results);
+          setMovieInfo(results);
+          return results;
+        } catch (error) {
+          console.log(error.message);
+        }
       }
     }
     addMovieInfo();
   }, [movieId]);
 
-  // const src =
-  //   movieInfo.poster_path === null
-  //     ? baseConfig.altPosterUrl
-  //     : baseConfig.postersUrl + baseConfig.postersSize + movieInfo.poster_path;
-
-  // console.log(movieInfo.genres);
-  // let genres;
-  // genres = movieInfo.genres.map(genre => genre.name).join(', ');
-  // console.log(genres);
-
   return (
     <>
       {movieInfo && (
         <main>
-          <div>
+          <Link to={location.state?.from ?? '/movies'}>Go back</Link>
+          <div className={styles.MovieWrapper}>
             <img
               src={
                 movieInfo.poster_path === null
@@ -47,27 +41,36 @@ export const MovieDetails = () => {
               }
               alt={movieInfo.title}
             />
-            <h1>{movieInfo.original_title}</h1>
-            <p>User score</p>
-            <h2>Overview</h2>
-            <p>{movieInfo.overview}</p>
-            <h2>Genres</h2>
-            <p>{movieInfo.genres.map(genre => genre.name).join(', ')}</p>
+            <div className={styles.MovieInfo}>
+              <h1 className={styles.MovieTitle}>{movieInfo.original_title}</h1>
+              <p>User score</p>
+              <h2 className={styles.MovieInfoTitle}>Overview</h2>
+              <p>{movieInfo.overview}</p>
+              <h2 className={styles.MovieInfoTitle}>Genres</h2>
+              <p>{movieInfo.genres.map(genre => genre.name).join(', ')}</p>
+            </div>
           </div>
           <div>
-            <h3>Additional information</h3>
-            <ul>
-              <li>
-                <Link to="cast">Cast</Link>
+            <h2 className={styles.MovieInfoTitle}>Additional information</h2>
+            <ul className={styles.AddInfo}>
+              <li className={styles.AddInfoItem}>
+                <Link to="cast" className={styles.AddInfoLink}>
+                  Cast
+                </Link>
               </li>
-              <li>
-                <Link to="reviews">Reviews</Link>
+              <li className={styles.AddInfoItem}>
+                <Link to="reviews" className={styles.AddInfoLink}>
+                  Reviews
+                </Link>
               </li>
+              <Suspense fallback={<Loader />}>
+                <Outlet />
+              </Suspense>
             </ul>
-            <Outlet />
           </div>
         </main>
       )}
     </>
   );
 };
+export default MovieDetails;

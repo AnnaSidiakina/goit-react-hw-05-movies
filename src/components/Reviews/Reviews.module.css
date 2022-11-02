@@ -1,0 +1,11 @@
+.ReviewsList {
+  list-style: none;
+}
+.ReviewsItem {
+  text-align: left;
+}
+.ReviewsAuthor {
+  font-size: 18px;
+}
+.ReviewsText {
+}

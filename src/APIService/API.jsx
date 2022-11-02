@@ -1,7 +1,16 @@
 import axios from 'axios';
 
+axios.defaults.baseURL = 'https://api.themoviedb.org/3';
+const API_KEY = '6a38aaae798b8ac86a83675596157586';
+const PARAMS = {
+  trending: 'trending/all/day',
+  search: 'search/movie',
+  movieID: 'movie/',
+  reviews: '/reviews',
+  credits: '/credits',
+};
+
 export const baseConfig = {
-  api_key: '6a38aaae798b8ac86a83675596157586',
   base_url: 'https://api.themoviedb.org/3',
   postersUrl: 'https://image.tmdb.org/t/p/',
   postersSize: 'w185',
@@ -9,61 +18,47 @@ export const baseConfig = {
     'https://www.vaureal.fr/sites/vaureal/files/styles/_site_contenu_image_principale/public/image/2022-03/Solidarit%C3%A9%20ukraine.jpg?itok=Gcqq2tD3',
 };
 
+// function get trenging movies for Home page, returns object
 export const fetchTrendingMovies = async () => {
-  const config = {
-    baseURL: baseConfig.base_url,
-    params: {
-      api_key: baseConfig.api_key,
-      language: 'en-US',
-    },
-  };
+  const { data } = await axios.get(`/${PARAMS.trending}?api_key=${API_KEY}`);
 
-  const response = await axios
-    .get('/trending/all/day', config)
-    .then(response => response.data)
-    .then(data => data.results);
-
-  //   console.log(response);
-  return response;
+  return data;
 };
 
+// function get movies by query for Movies page, returns object
 export async function fetchMoviesByQuery(query) {
-  const config = {
-    baseURL: baseConfig.base_url,
-    params: {
-      api_key: baseConfig.api_key,
-      language: 'en-US',
-      query: query,
-    },
-  };
+  const { data } = await axios.get(
+    `/${PARAMS.search}?api_key=${API_KEY}&query=${query}&language=en-US&page=1&include_adult=false`
+  );
 
-  try {
-    const response = await axios
-      .get('/search/movie', config)
-      .then(response => response.data)
-      .then(data => data.results);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error.message);
-  }
+  //   console.log(data);
+  return data;
 }
-export async function getMovieByID(id) {
-  const config = {
-    baseURL: baseConfig.base_url,
-    params: {
-      api_key: baseConfig.api_key,
-      language: 'en-US',
-    },
-  };
-  try {
-    const response = await axios
-      .get(`movie/${id}`, config)
-      .then(response => response.data);
 
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error.message);
-  }
+// function get movies by ID for Movie Details page, returns an object (info about movie)
+export async function getMovieByID(id) {
+  const { data } = await axios.get(
+    `/${PARAMS.movieID}${id}?api_key=${API_KEY}&language=en-US`
+  );
+
+  return data;
+}
+
+// function get cast info about movie for Cast page
+export async function getCastMovie(id) {
+  const { data } = await axios.get(
+    `/${PARAMS.movieID}${id}${PARAMS.credits}?api_key=${API_KEY}&language=en-US`
+  );
+  console.log(data);
+
+  return data;
+}
+
+// function get reviews info about movie for Reviews page
+export async function getReviewsMovie(id) {
+  const { data } = await axios.get(
+    `/${PARAMS.movieID}${id}${PARAMS.reviews}?api_key=${API_KEY}&language=en-US`
+  );
+
+  return data;
 }
