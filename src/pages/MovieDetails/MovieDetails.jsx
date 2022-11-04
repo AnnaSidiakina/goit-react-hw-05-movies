@@ -35,7 +35,6 @@ const MovieDetails = () => {
     }
     addMovieInfo();
   }, [movieId]);
-  console.log(location);
 
   return (
     <>

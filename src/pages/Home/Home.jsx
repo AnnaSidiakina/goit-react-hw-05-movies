@@ -29,7 +29,7 @@ const TrendingMoviesList = () => {
       }
     }
     addMoviesList();
-  }, [page]);
+  }, [page, setSearchParams]);
 
   const handlePageClick = e => {
     setSearchParams({ page: e.selected + 1 });

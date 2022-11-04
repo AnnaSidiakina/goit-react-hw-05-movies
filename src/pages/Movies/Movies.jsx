@@ -36,7 +36,7 @@ const Movies = () => {
       }
     }
     addMoviesListByQuery();
-  }, [query, page]);
+  }, [query, page, setSearchParams]);
 
   const formSubmitHandler = query => {
     if (query.trim() === '') {
