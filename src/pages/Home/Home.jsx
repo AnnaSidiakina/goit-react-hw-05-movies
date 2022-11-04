@@ -10,6 +10,7 @@ const TrendingMoviesList = () => {
   const [total, setTotal] = useState(0);
   const [error, setError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const page = Number(searchParams.get('page') ?? 1);
 
   useEffect(() => {
