@@ -48,7 +48,7 @@ const Movies = () => {
     setMoviesList([]);
   };
 
-  const onLoadMore = e => {
+  const handlePageClick = e => {
     setSearchParams({ query: query, page: e.selected + 1 });
   };
 
@@ -57,7 +57,9 @@ const Movies = () => {
       <div>
         <Searchbar onSubmit={formSubmitHandler} />
         {moviesList && <MovieList movies={moviesList} />}
-        {total > 1 && <Paginate total={total} onLoadMore={onLoadMore} />}
+        {total > 1 && (
+          <Paginate total={total} handlePageClick={handlePageClick} />
+        )}
 
         {error && <p>Sorry, we can't find anyting for your request.</p>}
       </div>

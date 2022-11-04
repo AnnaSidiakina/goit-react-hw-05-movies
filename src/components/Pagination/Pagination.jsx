@@ -1,15 +1,14 @@
-import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
-// import { Pagination } from './Pagination.styled';
 import styles from './Pagination.module.css';
 
-const Paginate = ({ total, onLoadMore }) => {
+const Paginate = ({ total, handlePageClick }) => {
   return (
     <div>
       <div className={styles.container}>
         <ReactPaginate
           pageCount={total}
-          onPageChange={onLoadMore}
+          onPageChange={handlePageClick}
           nextLabel=">"
           previousLabel="<"
           pageRangeDisplayed={5}
@@ -32,4 +31,10 @@ const Paginate = ({ total, onLoadMore }) => {
     </div>
   );
 };
+
+Paginate.propTypes = {
+  total: PropTypes.number.isRequired,
+  handlePageClick: PropTypes.func.isRequired,
+};
+
 export default Paginate;

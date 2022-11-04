@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { getCastMovie } from 'APIService/API';
 import {
   CastList,
