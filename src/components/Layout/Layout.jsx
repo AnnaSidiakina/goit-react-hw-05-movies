@@ -1,17 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import { AppBar } from 'components/AppBar/AppBar';
 import { Suspense } from 'react';
-import Loader from '../Loader';
-import styles from './Layout.module.css';
+import Loader from '../Loader/Loader';
+import { Container } from './Layout.styled';
 
 const Layout = () => {
   return (
-    <div className={styles.Container}>
+    <Container>
       <AppBar />
       <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
-    </div>
+    </Container>
   );
 };
 export default Layout;

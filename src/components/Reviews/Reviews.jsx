@@ -1,27 +1,55 @@
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getReviewsMovie } from 'APIService/API';
 import { nanoid } from 'nanoid';
-import styles from './Reviews.module.css';
+import {
+  ReviewsList,
+  ReviewsItem,
+  ReviewsAuthor,
+  ReviewsText,
+} from './Reviews.styled';
 
-export const Reviews = ({ reviews }) => {
+const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
+  const { movieId } = useParams();
+
+  useEffect(() => {
+    async function addReviews() {
+      if (movieId) {
+        try {
+          const { results } = await getReviewsMovie(movieId);
+          setReviews(results);
+          return results;
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    }
+    addReviews(movieId);
+  }, [movieId]);
+
   return (
     <>
-      <ul className={styles.ReviewsList}>
-        {reviews.length > 0 ? (
-          reviews.map(review => {
-            return (
-              <li key={nanoid()} className={styles.ReviewsItem}>
-                <h2 className={styles.ReviewsAuthor}>
-                  Author: {review.author}
-                </h2>
-                <p className={styles.ReviewsText}>{review.content}</p>
-              </li>
-            );
-          })
-        ) : (
-          <p>
-            Sorry, there is no information about the reviews for this movie.
-          </p>
-        )}
-      </ul>
+      {reviews && (
+        <ReviewsList>
+          {reviews.length > 0 ? (
+            reviews.map(review => {
+              return (
+                <ReviewsItem key={nanoid()}>
+                  <ReviewsAuthor>Author: {review.author}</ReviewsAuthor>
+                  <ReviewsText>{review.content}</ReviewsText>
+                </ReviewsItem>
+              );
+            })
+          ) : (
+            <ReviewsText>
+              Sorry, there is no information about the reviews for this movie.
+            </ReviewsText>
+          )}
+        </ReviewsList>
+      )}
     </>
   );
 };
+export default Reviews;

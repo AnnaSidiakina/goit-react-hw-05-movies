@@ -1,38 +1,64 @@
 import { nanoid } from 'nanoid';
-import styles from './Cast.module.css';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getCastMovie } from 'APIService/API';
+import {
+  CastList,
+  ImgWrapper,
+  CastImg,
+  CastInfo,
+  CastName,
+} from './Cast.styled';
 
-export const Cast = ({ cast }) => {
+export const Cast = () => {
+  const [cast, setCast] = useState([]);
+  const { movieId } = useParams();
+
+  useEffect(() => {
+    async function addCast() {
+      if (movieId) {
+        try {
+          const { cast } = await getCastMovie(movieId);
+          setCast(cast);
+          return cast;
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    }
+    addCast(movieId);
+  }, [movieId]);
+
   return (
     <>
-      <ul className={styles.CastList}>
-        {cast.length > 0 ? (
-          cast.map(actor => {
+      {cast && (
+        <CastList>
+          {cast.map(actor => {
             const poster = actor.profile_path
               ? `https://image.tmdb.org/t/p/w300${actor.profile_path}`
-              : 'https://nuft.edu.ua/assets/images/people/no-image.jpg';
+              : 'https://cdn.pixabay.com/photo/2017/04/15/16/59/skeleton-2232884_960_720.jpg';
             return (
-              <li key={nanoid()} className={styles.CastItem}>
-                <div className={styles.ImgWrapper}>
-                  <img
-                    src={poster}
-                    alt={actor.name}
-                    className={styles.CastImg}
-                  />
-                </div>
-                <p className={styles.CastInfo}>
-                  Name: <span className={styles.CastName}>{actor.name}</span>
-                </p>
-                <p className={styles.CastInfo}>
-                  Character:{' '}
-                  <span className={styles.CastName}>{actor.character}</span>
-                </p>
+              <li key={nanoid()}>
+                <ImgWrapper>
+                  <CastImg src={poster} alt={actor.name} />
+                </ImgWrapper>
+                <CastInfo>
+                  Name: <CastName>{actor.name}</CastName>
+                </CastInfo>
+                <CastInfo>
+                  Character:
+                  <CastName>{actor.character}</CastName>
+                </CastInfo>
               </li>
             );
-          })
-        ) : (
-          <p>Sorry, there is no information about the cast for this movie.</p>
-        )}
-      </ul>
+          })}
+        </CastList>
+      )}
+      <CastInfo>
+        Sorry, there is no information about the cast for this movie.
+      </CastInfo>
     </>
   );
 };
+export default Cast;

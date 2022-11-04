@@ -1,8 +1,18 @@
-import { getMovieByID, baseConfig } from '../../APIService/API';
+import { getMovieByID } from '../../APIService/API';
 import { Suspense, useEffect, useState } from 'react';
-import { Link, Outlet, useParams, useLocation } from 'react-router-dom';
-import Loader from 'components/Loader';
-import styles from './MovieDetails.module.css';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
+import Loader from 'components/Loader/Loader';
+import GoBackButton from 'components/GoBackButton/GoBackButton';
+import {
+  MovieWrapper,
+  MovieInfoBlock,
+  MovieTitle,
+  MovieInfoTitle,
+  AddInfo,
+  AddInfoLink,
+  AddInfoItem,
+  MovieImg,
+} from './MovieDetails.styled';
 
 const MovieDetails = () => {
   const [movieInfo, setMovieInfo] = useState(null);
@@ -29,44 +39,48 @@ const MovieDetails = () => {
     <>
       {movieInfo && (
         <main>
-          <Link to={location.state?.from ?? '/movies'}>Go back</Link>
-          <div className={styles.MovieWrapper}>
-            <img
+          <GoBackButton />
+
+          <MovieWrapper>
+            <MovieImg
               src={
-                movieInfo.poster_path === null
-                  ? baseConfig.altPosterUrl
-                  : baseConfig.postersUrl +
-                    baseConfig.postersSize +
-                    movieInfo.poster_path
+                movieInfo.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`
+                  : 'https://cdn.pixabay.com/photo/2015/12/09/17/12/popcorn-1085072_960_720.jpg'
               }
               alt={movieInfo.title}
             />
-            <div className={styles.MovieInfo}>
-              <h1 className={styles.MovieTitle}>{movieInfo.original_title}</h1>
-              <p>User score</p>
-              <h2 className={styles.MovieInfoTitle}>Overview</h2>
+            <MovieInfoBlock>
+              <MovieTitle>
+                {movieInfo.original_title} ({movieInfo.release_date.slice(0, 4)}
+                )
+              </MovieTitle>
+              <p>
+                User score: {Math.round((movieInfo.vote_average / 10) * 100)}%
+              </p>
+              <MovieInfoTitle>Overview</MovieInfoTitle>
               <p>{movieInfo.overview}</p>
-              <h2 className={styles.MovieInfoTitle}>Genres</h2>
+              <MovieInfoTitle>Genres</MovieInfoTitle>
               <p>{movieInfo.genres.map(genre => genre.name).join(', ')}</p>
-            </div>
-          </div>
+            </MovieInfoBlock>
+          </MovieWrapper>
           <div>
-            <h2 className={styles.MovieInfoTitle}>Additional information</h2>
-            <ul className={styles.AddInfo}>
-              <li className={styles.AddInfoItem}>
-                <Link to="cast" className={styles.AddInfoLink}>
+            <MovieInfoTitle>Additional information</MovieInfoTitle>
+            <AddInfo>
+              <AddInfoItem>
+                <AddInfoLink to="cast" state={location.state}>
                   Cast
-                </Link>
-              </li>
-              <li className={styles.AddInfoItem}>
-                <Link to="reviews" className={styles.AddInfoLink}>
+                </AddInfoLink>
+              </AddInfoItem>
+              <AddInfoItem>
+                <AddInfoLink to="reviews" state={location.state}>
                   Reviews
-                </Link>
-              </li>
+                </AddInfoLink>
+              </AddInfoItem>
               <Suspense fallback={<Loader />}>
                 <Outlet />
               </Suspense>
-            </ul>
+            </AddInfo>
           </div>
         </main>
       )}

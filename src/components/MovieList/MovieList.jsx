@@ -1,22 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { List, ListItem, ListLink } from './MovieList.styled';
 
-export const MovieList = ({ moviesArray }) => {
+const MovieList = ({ movies }) => {
+  const location = useLocation();
+
   return (
     <div>
-      <ul>
-        {moviesArray.map(movie => {
-          return movie.hasOwnProperty('title') ? (
-            <li key={movie.id}>
-              <Link to={`${movie.id}`}>{movie.title}</Link>
-            </li>
-          ) : (
-            <li key={movie.id}>
-              <Link to={`${movie.id}`}>{movie.name}</Link>
-            </li>
-          );
-        })}
-      </ul>
+      <List>
+        {movies.map(({ id, title, name }) => (
+          <ListItem key={id}>
+            <ListLink to={`/movies/${id}`} state={{ from: location }}>
+              {title || name}
+            </ListLink>
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 };
+export default MovieList;

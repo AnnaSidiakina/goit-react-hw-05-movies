@@ -10,13 +10,13 @@ const PARAMS = {
   credits: '/credits',
 };
 
-export const baseConfig = {
-  base_url: 'https://api.themoviedb.org/3',
-  postersUrl: 'https://image.tmdb.org/t/p/',
-  postersSize: 'w185',
-  altPosterUrl:
-    'https://www.vaureal.fr/sites/vaureal/files/styles/_site_contenu_image_principale/public/image/2022-03/Solidarit%C3%A9%20ukraine.jpg?itok=Gcqq2tD3',
-};
+// export const baseConfig = {
+//   base_url: 'https://api.themoviedb.org/3',
+//   postersUrl: 'https://image.tmdb.org/t/p/',
+//   postersSize: 'w185',
+//   altPosterUrl:
+//     'https://www.vaureal.fr/sites/vaureal/files/styles/_site_contenu_image_principale/public/image/2022-03/Solidarit%C3%A9%20ukraine.jpg?itok=Gcqq2tD3',
+// };
 
 // function get trenging movies for Home page, returns object
 export const fetchTrendingMovies = async () => {
@@ -49,7 +49,6 @@ export async function getCastMovie(id) {
   const { data } = await axios.get(
     `/${PARAMS.movieID}${id}${PARAMS.credits}?api_key=${API_KEY}&language=en-US`
   );
-  console.log(data);
 
   return data;
 }

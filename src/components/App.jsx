@@ -9,8 +9,11 @@ import Layout from './Layout/Layout';
 
 const Movies = lazy(() => import('../pages/Movies/Movies'));
 const MovieDetails = lazy(() => import('../pages/MovieDetails/MovieDetails'));
-const CastPage = lazy(() => import('pages/Cast/CastPage'));
-const ReviewsPage = lazy(() => import('pages/Reviews/ReviewsPage'));
+const Cast = lazy(() => import('../components/Cast/Cast'));
+const Reviews = lazy(() => import('../components/Reviews/Reviews'));
+const PageNotFound = lazy(() =>
+  import('../components/PageNotFound/PageNotFound')
+);
 
 export const App = () => {
   return (
@@ -20,9 +23,10 @@ export const App = () => {
           <Route index element={<TrendingMoviesList />} />
           <Route path="movies" element={<Movies />} />
           <Route path="/movies/:movieId" element={<MovieDetails />}>
-            <Route path="/movies/:movieId/cast" element={<CastPage />} />
-            <Route path="/movies/:movieId/reviews" element={<ReviewsPage />} />
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
           </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </div>

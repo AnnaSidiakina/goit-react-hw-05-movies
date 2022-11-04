@@ -1,17 +1,14 @@
-import { NavLink } from 'react-router-dom';
-import styles from './AppBar.module.css';
+import { Menu, Link } from './AppBar.styled';
 
 export const AppBar = () => {
   return (
-    <header className={styles.Menu}>
+    <Menu>
       <nav>
-        <NavLink to="/" className={styles.MenuItem}>
+        <Link to="/" end>
           Home
-        </NavLink>
-        <NavLink to="movies" className={styles.MenuItem}>
-          Movies
-        </NavLink>
+        </Link>
+        <Link to="/movies">Movies</Link>
       </nav>
-    </header>
+    </Menu>
   );
 };
