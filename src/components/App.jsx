@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import TrendingMoviesList from 'pages/Home/Home';
 // import { Movies } from '../pages/Movies/Movies';
 import Layout from './Layout/Layout';
