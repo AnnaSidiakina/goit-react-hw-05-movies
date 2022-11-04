@@ -15,6 +15,7 @@ import {
 } from './MovieDetails.styled';
 
 const MovieDetails = () => {
+  const [error, setError] = useState(false);
   const [movieInfo, setMovieInfo] = useState(null);
   const { movieId } = useParams();
   const location = useLocation();
@@ -28,12 +29,13 @@ const MovieDetails = () => {
           setMovieInfo(results);
           return results;
         } catch (error) {
-          console.log(error.message);
+          setError(true);
         }
       }
     }
     addMovieInfo();
   }, [movieId]);
+  console.log(location);
 
   return (
     <>
@@ -84,6 +86,7 @@ const MovieDetails = () => {
           </div>
         </main>
       )}
+      {error && <p>Something went wrong, please, try again</p>}
     </>
   );
 };

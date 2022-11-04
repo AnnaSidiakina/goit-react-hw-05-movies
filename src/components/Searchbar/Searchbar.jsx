@@ -20,6 +20,7 @@ export const Searchbar = ({ onSubmit }) => {
       <SearchForm onSubmit={handleSubmit}>
         <SearchInput
           onChange={handleInputChange}
+          value={query}
           type="text"
           autoComplete="off"
           autoFocus

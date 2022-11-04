@@ -19,16 +19,18 @@ const PARAMS = {
 // };
 
 // function get trenging movies for Home page, returns object
-export const fetchTrendingMovies = async () => {
-  const { data } = await axios.get(`/${PARAMS.trending}?api_key=${API_KEY}`);
+export const fetchTrendingMovies = async page => {
+  const { data } = await axios.get(
+    `/${PARAMS.trending}?api_key=${API_KEY}&page=${page}`
+  );
 
   return data;
 };
 
 // function get movies by query for Movies page, returns object
-export async function fetchMoviesByQuery(query) {
+export async function fetchMoviesByQuery(query, page) {
   const { data } = await axios.get(
-    `/${PARAMS.search}?api_key=${API_KEY}&query=${query}&language=en-US&page=1&include_adult=false`
+    `/${PARAMS.search}?api_key=${API_KEY}&query=${query}&language=en-US&page=${page}&include_adult=false`
   );
 
   //   console.log(data);

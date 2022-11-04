@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import TrendingMoviesList from 'pages/Home/Home';
 // import { Movies } from '../pages/Movies/Movies';
 import Layout from './Layout/Layout';
+import { ToastContainer } from 'react-toast';
 // import MovieDetails from '../pages/MovieDetails/MovieDetails';
 // import CastPage from 'pages/Cast/CastPage';
 // import ReviewsPage from 'pages/Reviews/ReviewsPage';
@@ -18,6 +19,7 @@ const PageNotFound = lazy(() =>
 export const App = () => {
   return (
     <div>
+      <ToastContainer delay={3000} position={'top-left'} />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<TrendingMoviesList />} />
