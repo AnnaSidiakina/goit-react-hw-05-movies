@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import styles from './Pagination.module.css';
 
-const Paginate = ({ total, handlePageClick }) => {
+const Paginate = ({ total, handlePageClick, page }) => {
   return (
     <div>
       <div className={styles.container}>
@@ -26,6 +26,7 @@ const Paginate = ({ total, handlePageClick }) => {
           activeClassName={styles.active}
           renderOnZeroPageCount={null}
           disabledClassName={styles.disable}
+          initialPage={page - 1}
         />
       </div>
     </div>
@@ -35,6 +36,7 @@ const Paginate = ({ total, handlePageClick }) => {
 Paginate.propTypes = {
   total: PropTypes.number.isRequired,
   handlePageClick: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
 export default Paginate;

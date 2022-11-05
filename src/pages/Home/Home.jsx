@@ -4,6 +4,7 @@ import MovieList from 'components/MovieList/MovieList';
 import { fetchTrendingMovies } from 'APIService/API';
 import { Title } from './Home.styled';
 import Paginate from 'components/Pagination/Pagination';
+import { topFunction } from 'Functions/Functions';
 
 const TrendingMoviesList = () => {
   const [movies, setMovies] = useState([]);
@@ -33,6 +34,7 @@ const TrendingMoviesList = () => {
 
   const handlePageClick = e => {
     setSearchParams({ page: e.selected + 1 });
+    topFunction();
   };
 
   return (
@@ -42,7 +44,11 @@ const TrendingMoviesList = () => {
           <Title>Trending today</Title>
           <MovieList movies={movies} />
           {total > 1 && (
-            <Paginate total={total} handlePageClick={handlePageClick} />
+            <Paginate
+              total={total}
+              handlePageClick={handlePageClick}
+              page={page}
+            />
           )}
         </div>
       )}
